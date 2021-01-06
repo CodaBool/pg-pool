@@ -1,12 +1,19 @@
 require("dotenv").config()
 const express = require("express")
-const app = express()
 const { Pool } = require('pg')
+const cors = require('cors')
+const app = express()
 const port = process.env.PORT || 3000 // added for heroku deploy to work
+
+// middleware
+app.use(cors())
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
+  ssl: { rejectUnauthorized: false },
+  max: 19, // 10 default
+  connectionTimeoutMillis: 10000, // 0 default
+  idleTimeoutMillis: 10000, // 10000 default
 })
 
 async function query(q, values) {
@@ -24,6 +31,9 @@ app.get("/", (req, res) => {
   res.status(200).send('try an endpoint')
 })
 
+app.get("/caffine", (req, res) => {
+  res.status(200).send('*sips*\nthanks')
+})
 app.get("/caffine", (req, res) => {
   res.status(200).send('*sips*\nthanks')
 })
