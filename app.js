@@ -31,8 +31,8 @@ app.get("/", (req, res) => {
   res.status(200).send('try an endpoint')
 })
 
-app.get("/caffine", (req, res) => {
-  res.status(200).send('*sips*\nthanks')
+app.get("/loaderio-ba7db8e3e245c156d37018ba8f199290", (req, res) => {
+  res.status(200).send('loaderio-ba7db8e3e245c156d37018ba8f199290')
 })
 app.get("/caffine", (req, res) => {
   res.status(200).send('*sips*\nthanks')
