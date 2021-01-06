@@ -5,7 +5,7 @@ const { Pool } = require('pg')
 const port = process.env.PORT || 3000 // added for heroku deploy to work
 
 const pool = new Pool({
-  connectionString: process.env.DB_URI,
+  connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 })
 
