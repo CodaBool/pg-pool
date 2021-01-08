@@ -45,50 +45,27 @@ app.get("/", async(req, res) => {
   res.status(200).send('try an endpoint')
 })
 
-app.get("/verify", async(req, res) => {
-  console.log('find key in here', req)
-  console.log('is this a key q?', req.query)
-  console.log('is this a key d?', req.data)
-  console.log('is this a key b?', req.body)
-  try {
-    if (req.query === process.env.POOL_KEY) {
-      res.status(200).json(result)
-    } else {
-      res.status(403).send('unauthorized')
-    }
-  } catch(err) {
-    res.status(400).send(JSON.stringify(err))
+app.get("/home", async(req, res) => {
+  if (req.query.key === process.env.POOL_KEY) {
+    const result = await query(req.query.query, req.query.arg, pool_home)
+    res.status(200).json(result)
+  } else {
+    res.status(403).send('unauthorized')
   }
 })
 
-app.get("/home", async(req, res) => {
-  // use api key
-  if (true) {
-    const result = await query('SELECT * FROM post', [], pool_home)
-    res.status(200).json(result)
-  } else {
-    res.status(403).send('unauthorized')
-  }
-})
 app.get("/market", async(req, res) => {
-  // use api key
-  if (true) {
-    const result = await query('SELECT * FROM post', [], pool_market)
-    res.status(200).json(result)
-  } else {
-    res.status(403).send('unauthorized')
-  }
-  if (true) {
-    const result = await query('SELECT * FROM post', [], pool_social)
+  if (req.query.key === process.env.POOL_KEY) {
+    const result = await query(req.query.query, req.query.arg, pool_market)
     res.status(200).json(result)
   } else {
     res.status(403).send('unauthorized')
   }
 })
+
 app.get("/social", async(req, res) => {
-  // use api key
-  if (true) {
-    const result = await query('SELECT * FROM post', [], pool_social)
+  if (req.query.key === process.env.POOL_KEY) {
+    const result = await query(req.query.query, req.query.arg, pool_social)
     res.status(200).json(result)
   } else {
     res.status(403).send('unauthorized')
@@ -98,10 +75,5 @@ app.get("/social", async(req, res) => {
 app.listen(port, () => console.log(`\n----> http://localhost:${port}\n`));
 
 /*
-only get 10000 rows
-- can have multiple pg which are pooled
-recieve
-query, values, apikey, which db
-return db result
-
+only get 10000 rows for heroku free tier
 */
