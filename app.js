@@ -46,10 +46,13 @@ app.get("/", async(req, res) => {
 })
 
 app.get("/home", async(req, res) => {
+  console.log(req.query.key, 'vs', process.env.POOL_KEY)
   if (req.query.key === process.env.POOL_KEY) {
+    console.log('authorized, performing query', req.query)
     const result = await query(req.query.query, req.query.arg, pool_home)
     res.status(200).json(result)
   } else {
+    console.log('failed authorization', req.query)
     res.status(403).send('unauthorized')
   }
 })
