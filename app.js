@@ -48,7 +48,11 @@ app.get("/", async(req, res) => {
 app.get("/home", async(req, res) => {
   if (req.query.key === process.env.POOL_KEY) {
     const result = await query(req.query.query, req.query.arg, pool_home)
-    res.status(200).json(result)
+    if (result.err) {
+      res.status(400).json(result.err)
+    } else {
+      res.status(200).json(result)
+    }
   } else {
     res.status(403).send('unauthorized')
   }
@@ -57,7 +61,11 @@ app.get("/home", async(req, res) => {
 app.get("/market", async(req, res) => {
   if (req.query.key === process.env.POOL_KEY) {
     const result = await query(req.query.query, req.query.arg, pool_market)
-    res.status(200).json(result)
+    if (result.err) {
+      res.status(400).json(result.err)
+    } else {
+      res.status(200).json(result)
+    }
   } else {
     res.status(403).send('unauthorized')
   }
@@ -66,7 +74,11 @@ app.get("/market", async(req, res) => {
 app.get("/social", async(req, res) => {
   if (req.query.key === process.env.POOL_KEY) {
     const result = await query(req.query.query, req.query.arg, pool_social)
-    res.status(200).json(result)
+    if (result.err) {
+      res.status(400).json(result.err)
+    } else {
+      res.status(200).json(result)
+    }
   } else {
     res.status(403).send('unauthorized')
   }
