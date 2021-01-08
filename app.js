@@ -46,7 +46,10 @@ app.get("/", async(req, res) => {
 })
 
 app.get("/verify", async(req, res) => {
-  console.log('is this a key?', req.query)
+  console.log('find key in here', req)
+  console.log('is this a key q?', req.query)
+  console.log('is this a key d?', req.data)
+  console.log('is this a key b?', req.body)
   try {
     if (req.query === process.env.POOL_KEY) {
       res.status(200).json(result)
