@@ -29,6 +29,13 @@ const pool_social = new Pool({
   connectionTimeoutMillis: 10000, // 0 default
   idleTimeoutMillis: 10000, // 10000 default
 })
+const pool_cs6440 = new Pool({
+  connectionString: process.env.CS6440_URI,
+  ssl: { rejectUnauthorized: false },
+  max: 19, // 10 default
+  connectionTimeoutMillis: 10000, // 0 default
+  idleTimeoutMillis: 10000, // 10000 default
+})
 
 async function query(q, values, pool) {
   return await pool.query(q, values)
@@ -74,6 +81,20 @@ app.get("/market", async(req, res) => {
 app.get("/social", async(req, res) => {
   if (req.query.key === process.env.POOL_KEY) {
     const result = await query(req.query.query, req.query.arg, pool_social)
+    if (result.err) {
+      res.status(400).json(result.err)
+    } else {
+      res.status(200).json(result)
+    }
+  } else {
+    res.status(403).send('unauthorized')
+  }
+})
+
+// masters project for CS6440, Health Informatics
+app.get("/cs6440", async(req, res) => {
+  if (req.query.key === process.env.POOL_KEY) {
+    const result = await query(req.query.query, req.query.arg, pool_cs6440)
     if (result.err) {
       res.status(400).json(result.err)
     } else {
